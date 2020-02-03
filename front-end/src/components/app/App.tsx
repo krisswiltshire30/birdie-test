@@ -15,12 +15,19 @@ interface AppProps {
 }
 
 interface AppState {
-
+  events: Array<{
+    id: string,
+    event_type: string,
+    visit_id: string,
+    timestamp: string,
+    caregiver_id: string,
+    care_recipient_id: string,
+    mood: string,
+  }>;
 }
 
 const GlobalStyle = createGlobalStyle`
   body {
-    height: 100vh;
     background-color: #F9F9F9;
     > div {
       height: 100%;
@@ -40,6 +47,13 @@ const AppContainer = styled.div`
 class App extends React.Component<AppProps, AppState> {
   public constructor(props: AppProps) {
     super(props);
+
+  }
+
+  async componentDidMount() {
+    let r = await fetch('/events');
+    let events = await r.json();
+    this.setState({ events });
   }
 
   public render() {
@@ -56,8 +70,8 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-const mapStateToProps = (state: RootState, ownProps: object) => {};
+const mapStateToProps = (state: RootState, ownProps: object) => { };
 
-const mapDispatchToProps = (dispatch: Dispatch<RootState>) => {};
+const mapDispatchToProps = (dispatch: Dispatch<RootState>) => { };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
